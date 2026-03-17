@@ -44,15 +44,15 @@ Complete these steps:
    > Always allow `SSH` (port 22) before enabling `ufw`.
    > Otherwise, you will lock yourself out of your VM.
 
-2. Find the [`<caddy-port>`](./caddy.md#caddy-port).
-
-3. To allow the application port,
+3. To allow the [LMS API port](./lms-api.md#lms-api-port),
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   sudo ufw allow <caddy-port>
+   sudo ufw allow <lms-api-port>
    ```
+
+   Replace the placeholder [`<lms-api-port>`](./lms-api.md#lms-api-port-placeholder).
 
 4. To enable the firewall,
 
