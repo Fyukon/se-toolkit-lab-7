@@ -364,7 +364,7 @@ If the lab involves deployment:
 6. Deployment task flow: SSH into VM → clone repo → create `.env.docker.secret` → `docker compose up --build -d`.
 7. Distinguish local vs remote env differences:
    - Local: `APP_HOST_ADDRESS=127.0.0.1` (localhost only).
-   - Remote: `CADDY_HOST_ADDRESS=0.0.0.0` (accessible from outside).
+   - Remote: `LMS_API_HOST_ADDRESS=0.0.0.0` (accessible from outside).
 8. **Use an institutional container registry** (e.g., Harbor cache proxy) for base images to avoid Docker Hub rate limits. Reference the registry in [`docker-compose.yml`](../docker-compose.yml) image fields instead of pulling directly from Docker Hub.
 
 ---
