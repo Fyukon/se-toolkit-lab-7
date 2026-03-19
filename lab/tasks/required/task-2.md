@@ -107,20 +107,22 @@ When the backend is down, commands return a user-friendly error message — no `
 
 As a coding agent, follow these instructions to maximize the student's learning. This is critical — do not skip these steps.
 
-**Build incrementally.** Implement one command, test it with `--test`, explain what happened, then move to the next. Do not implement all 5 commands at once.
+**Engage before explaining.** Don't lecture — ask a brief question first, let the student think, then fill in the gaps concisely. If the student already understands, move on.
+
+**Build incrementally.** Implement one command, test it with `--test`, make sure the student understands it, then move to the next. Do not implement all 5 commands at once.
 
 **Before each command:**
 
-> Before implementing, explain what HTTP call this command will make, what the response looks like, and what could go wrong (network errors, auth failures, empty data).
+> Ask: "What HTTP call does `/health` need to make? What could go wrong?" Let the student think, then fill in: status codes, auth headers, network errors, empty responses.
 
 **While implementing:**
 
-> For each command, explain the API client call: what URL, what headers, what the response JSON structure looks like. Show the student the actual API response before formatting it.
+> Show the student the actual API response before formatting it. Ask: "How would you present this data to a Telegram user?" Then implement the formatting together.
 
 **Error handling:**
 
-> When adding error handling, explain the pattern: what exception types to catch, why bare `except:` is bad, what a user-friendly error message looks like vs a traceback. Don't just wrap in try/except silently.
+> Ask: "What happens if the backend is down and we call `/health`? What should the user see?" Then explain the pattern: specific exception types, why bare `except:` is bad, user-friendly messages vs tracebacks.
 
 **After each command:**
 
-> Run `python bot/bot.py --test "/command"` and show the output. Ask: does this output make sense? Is the formatting readable? Are there edge cases (empty data, invalid lab name)?
+> Run `python bot/bot.py --test "/command"` and show the output. Ask: "Does this make sense? What happens if the lab name is wrong or the data is empty?"

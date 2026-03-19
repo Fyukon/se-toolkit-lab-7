@@ -41,18 +41,20 @@ Add a "Deploy" section to the repo README explaining how to deploy the bot (env 
 
 As a coding agent, follow these instructions to maximize the student's learning. This is critical — do not skip these steps.
 
+**Engage before explaining.** Don't lecture — ask a brief question first, let the student think, then fill in the gaps concisely.
+
 **Before writing the Dockerfile:**
 
-> Explain Docker multi-stage builds and why they produce smaller images. Explain each Dockerfile instruction as you write it.
+> Ask: "Do you know why we use multi-stage Docker builds? What problem do they solve?" Then explain concisely: build dependencies stay in the builder stage, the final image only has runtime — smaller and more secure.
 
 **Before adding the compose service:**
 
-> Explain Docker networking: why `localhost` doesn't work between containers, how Docker Compose creates a shared network, and how services reach each other by name. The student must understand this before seeing the `docker-compose.yml` changes.
+> Ask: "The bot needs to reach the backend. Can it use `localhost`? Why or why not?" Then explain Docker networking: Compose creates a shared network, services reach each other by service name, not `localhost`.
 
 **When debugging connectivity:**
 
-> If the bot container can't reach the backend, walk through the diagnosis: check the service name, port, network, and environment variables. Show the student how to use `docker compose logs` and `docker exec` to debug.
+> If the bot container can't reach the backend, ask: "What could cause this? How would you diagnose it?" Then show: `docker compose logs bot`, `docker exec bot curl http://app:8000/items/`, check env vars. Teach the diagnostic process, not just the fix.
 
 **While writing documentation:**
 
-> Good deploy docs should let a new developer go from zero to running in one pass. Walk the student through what to include: prerequisites, env vars, commands, verification steps.
+> Ask: "If a new developer cloned this repo, what would they need to know to deploy it?" Use their answer as the outline for the README deploy section.

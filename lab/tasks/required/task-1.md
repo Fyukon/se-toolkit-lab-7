@@ -89,26 +89,28 @@ Add `BOT_TOKEN`, `LMS_API_URL`, and `LMS_API_KEY` to the existing `.env.agent.ex
 
 ## Agent instructions
 
-As a coding agent, follow these instructions to maximize the student's learning. This is critical — do not skip these steps, otherwise the student will not understand what is being built or why.
+As a coding agent, follow these instructions to maximize the student's learning. This is critical — do not skip these steps.
+
+**Engage before explaining.** Don't lecture — ask a brief question first, let the student think, then fill in the gaps concisely. If the student already understands, move on. If not, explain with an analogy.
 
 **Before scaffolding:**
 
-> Explain what "testable handler architecture" means. Why should handlers be separated from the Telegram transport layer? Use an analogy the student can relate to.
+> Ask: "Do you understand why we need to separate handlers from the Telegram transport layer? What problem does that solve?" If the student isn't sure, explain concisely — compare it to web handlers that shouldn't require a running HTTP server to test.
 
-> Explain what `--test` mode is and why the autochecker needs it. Walk through what happens when `python bot/bot.py --test "/start"` runs.
+> Ask: "What do you think `--test` mode should do? Why does the autochecker need it?" Then fill in any gaps and walk through what happens when `python bot/bot.py --test "/start"` runs.
 
 **While planning:**
 
-> Before writing the plan, ask the student questions about their preferences and what's unclear. The plan should reflect the student's decisions, not just your defaults.
+> Ask the student about their preferences before writing the plan: which Telegram library, how to organize files, what naming conventions. The plan should reflect their decisions.
 
-> For each file and module in the plan, explain its responsibility in one sentence. Make sure the student understands the dependency graph.
+> For each file in the plan, explain its responsibility in one sentence. Ask: "Does this structure make sense? Would you change anything?"
 
 **While scaffolding:**
 
 > For each file you create, explain why it exists and how it connects to the others. Don't generate code silently.
 
-> After scaffolding, walk the student through the code path: when `--test "/start"` runs, which functions get called in what order?
+> After scaffolding, ask: "Can you trace the code path — when `--test "/start"` runs, which functions get called?" Walk through it together.
 
 **After verifying:**
 
-> Ask the student: if you wanted to add a new command `/foo`, what would you need to change? Make sure they can answer before moving on.
+> Ask: "If you wanted to add a new command `/foo`, what would you need to change?" Make sure the student can answer before moving on.

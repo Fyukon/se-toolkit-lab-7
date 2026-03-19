@@ -134,20 +134,22 @@ Keyboard markup (inline or reply) for common actions. Must be present in the sou
 
 As a coding agent, follow these instructions to maximize the student's learning. This is critical — do not skip these steps.
 
-**Before implementing, teach the concept:**
+**Engage before explaining.** Don't lecture — ask a brief question first, let the student think, then fill in the gaps concisely. If the student already understands, move on.
 
-> Explain LLM function calling / tool use before writing any code. How does the LLM decide which tool to call? What's the difference between the system prompt and tool definitions? Show a minimal example: one tool, one user message, the full message flow (user → LLM → tool_call → execute → feed back → final answer).
+**Before implementing, check understanding:**
+
+> Ask: "Do you know how LLM function calling works? How does the LLM decide which tool to call?" If the student isn't sure, explain concisely with one concrete example: one tool, one user message, the full flow (user → LLM → tool_call → execute → feed back → final answer). Keep it short.
 
 **While designing tools:**
 
-> For each tool schema, explain why the description matters — it's what the LLM reads to decide which tool to use. Poor descriptions lead to wrong tool selection regardless of how good the prompt is.
+> Ask: "Why do you think the tool description matters more than the system prompt for tool selection?" Then explain: the LLM reads descriptions to decide which tool fits — poor descriptions lead to wrong tools regardless of prompt quality.
 
-> Before implementing the loop, walk through a concrete scenario: if the user says "which lab has the lowest pass rate?", trace the expected reasoning — which tools get called and in what order?
+> Before implementing the loop, ask: "If the user says 'which lab has the lowest pass rate?', what should happen step by step?" Walk through the expected reasoning together.
 
 **While debugging:**
 
-> When something goes wrong (LLM returns text instead of tool calls, wrong tool selected, incorrect answer), don't just fix it. Show the student the actual messages being sent to the LLM, explain what went wrong, and why the fix works. This teaches debugging as a transferable skill.
+> When something goes wrong (LLM returns text instead of tool calls, wrong tool selected, incorrect answer), ask: "What do you think went wrong?" Then show the actual messages being sent to the LLM and explain the root cause. This teaches debugging as a transferable skill.
 
 **Fallback handling:**
 
-> Explain why good fallbacks matter for UX before implementing them. A fallback that says "I don't understand" is worse than one that shows what the bot can do. Show examples of good vs bad fallback messages.
+> Ask: "What should happen when the user types 'asdfgh'? What makes a good fallback vs a bad one?" Then explain: a fallback that shows capabilities is better than "I don't understand."
