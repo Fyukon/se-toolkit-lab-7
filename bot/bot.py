@@ -10,7 +10,7 @@ if current_dir not in sys.path:
 
 try:
     from config import settings
-    from handlers import dispatch_command, handle_start, handle_help, handle_health, handle_scores, handle_version
+    from handlers import dispatch_command, handle_start, handle_help, handle_health, handle_scores, handle_version, handle_labs
 except ImportError as e:
     print(f"Import Error: {e}")
     sys.exit(1)
@@ -21,16 +21,19 @@ from aiogram.filters import Command
 # --- Telegram Bot Part ---
 
 async def start_handler(message: types.Message):
-    await message.answer(handle_start())
+    await message.answer(await handle_start())
 
 async def help_handler(message: types.Message):
-    await message.answer(handle_help())
+    await message.answer(await handle_help())
 
 async def health_handler(message: types.Message):
-    await message.answer(handle_health())
+    await message.answer(await handle_health())
+
+async def labs_handler(message: types.Message):
+    await message.answer(await handle_labs())
 
 async def version_handler(message: types.Message):
-    await message.answer(handle_version())
+    await message.answer(await handle_version())
 
 async def scores_handler(message: types.Message, command: types.BotCommand = None):
     args = ""
@@ -39,7 +42,7 @@ async def scores_handler(message: types.Message, command: types.BotCommand = Non
         args = command.args
     elif hasattr(message, 'text') and len(message.text.split()) > 1:
         args = " ".join(message.text.split()[1:])
-    await message.answer(handle_scores(args))
+    await message.answer(await handle_scores(args))
 
 async def main():
     if not settings.BOT_TOKEN:
@@ -52,6 +55,7 @@ async def main():
     dp.message.register(start_handler, Command("start"))
     dp.message.register(help_handler, Command("help"))
     dp.message.register(health_handler, Command("health"))
+    dp.message.register(labs_handler, Command("labs"))
     dp.message.register(version_handler, Command("version"))
     dp.message.register(scores_handler, Command("scores"))
 
@@ -60,9 +64,9 @@ async def main():
 
 # --- CLI Part ---
 
-def cli_mode(command_text: str):
+async def cli_mode(command_text: str):
     try:
-        response = dispatch_command(command_text)
+        response = await dispatch_command(command_text)
         if response:
             print(response)
         else:
@@ -78,7 +82,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.test:
-        cli_mode(args.test)
+        asyncio.run(cli_mode(args.test))
     else:
         try:
             asyncio.run(main())
