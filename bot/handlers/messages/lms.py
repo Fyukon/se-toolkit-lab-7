@@ -20,17 +20,22 @@ async def handle_labs() -> str:
     items = response.get("data", [])
     labs = {}
     for item in items:
-        lab_id = item.get("lab_id")
-        lab_name = item.get("lab_name")
-        if lab_id and lab_name:
-            labs[lab_id] = lab_name
+        # Check for lab type or just collect all with titles
+        if item.get("type") == "lab":
+            # Extract a lab-XX ID from title or use title as is
+            title = item.get("title", "Unknown Lab")
+            # We want keys like "lab-01", "lab-02" for /scores command
+            import re
+            match = re.search(r"Lab\s*(\d+)", title, re.IGNORECASE)
+            lab_id = f"lab-{match.group(1)}" if match else f"lab-{item.get('id', '??')}"
+            labs[lab_id] = title
             
     if not labs:
         return "No labs available at the moment."
     
     output = "Available labs:\n"
     for lid, name in sorted(labs.items()):
-        output += f"- {lid.replace('-', ' ').title()} — {name}\n"
+        output += f"- `{lid}` — {name}\n"
     return output
 
 async def handle_scores(args: str = "") -> str:
@@ -50,8 +55,9 @@ async def handle_scores(args: str = "") -> str:
     
     output = f"Pass rates for {lab_id.replace('-', ' ').title()}:\n"
     for entry in data:
-        task_name = entry.get("task_name", "Unknown Task")
-        pass_rate = entry.get("pass_rate", 0) * 100
+        task_name = entry.get("task", "Unknown Task")
+        # avg_score is already in 0-100 format based on curl output (88.8)
+        pass_rate = entry.get("avg_score", 0)
         attempts = entry.get("attempts", 0)
         output += f"- {task_name}: {pass_rate:.1f}% ({attempts} attempts)\n"
     return output

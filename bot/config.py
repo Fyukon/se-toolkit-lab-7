@@ -4,8 +4,8 @@ import os
 
 class Settings(BaseSettings):
     BOT_TOKEN: Optional[str] = None
-    LMS_API_URL: str = "http://localhost:8000"
-    LMS_API_KEY: str = "placeholder_key"
+    LMS_API_URL: str = "http://localhost:42002"
+    LMS_API_KEY: str = "alex"
     LLM_API_KEY: Optional[str] = None
 
     model_config = SettingsConfigDict(
