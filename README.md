@@ -91,3 +91,45 @@ By the end of this lab, you should be able to say:
 2. [Backend Integration](./lab/tasks/required/task-2.md) — P0: slash commands + real data
 3. [Intent-Based Natural Language Routing](./lab/tasks/required/task-3.md) — P1: LLM tool use
 4. [Containerize and Document](./lab/tasks/required/task-4.md) — P3: containerize + deploy
+
+## Deploy
+
+To deploy the LMS bot and its backend services, follow these steps:
+
+### 1. Configuration
+Create a `.env.docker.secret` file in the root directory and add the following variables:
+
+```env
+# Telegram Bot
+BOT_TOKEN=your_telegram_bot_token
+
+# Backend & Postgres
+LMS_API_KEY=your_lms_api_key
+POSTGRES_PASSWORD=your_postgres_password
+
+# LLM API (Qwen Proxy)
+LLM_API_KEY=your_qwen_proxy_api_key
+LLM_API_MODEL=coder-model
+```
+
+### 2. Run with Docker Compose
+Start all services in the background:
+
+```bash
+docker compose --env-file .env.docker.secret up --build -d
+```
+
+### 3. Verify Deployment
+Check that all containers are running:
+
+```bash
+docker compose --env-file .env.docker.secret ps
+```
+
+Verify the bot logs:
+
+```bash
+docker compose --env-file .env.docker.secret logs bot --tail 20
+```
+
+The bot should now be active in Telegram and able to communicate with the backend service at `http://backend:8000`.
