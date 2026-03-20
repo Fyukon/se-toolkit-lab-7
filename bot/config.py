@@ -16,7 +16,9 @@ class Settings(BaseSettings):
             "../.env.bot.example"
         ),
         env_file_encoding="utf-8",
-        extra="ignore"
+        extra="ignore",
+        # Allow missing files
+        env_nested_delimiter="__"
     )
 
 settings = Settings()

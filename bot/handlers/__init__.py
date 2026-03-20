@@ -1,7 +1,7 @@
 from typing import Dict, Any, Callable
-from .core import handle_start, handle_help
-from .lms import handle_health, handle_scores
-from .info import handle_version
+from .messages.core import handle_start, handle_help
+from .messages.lms import handle_health, handle_scores
+from .messages.info import handle_version
 
 def handle_unknown(text: str) -> str:
     return f"I don't understand: {text}"
