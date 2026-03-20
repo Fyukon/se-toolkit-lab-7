@@ -148,6 +148,10 @@ async def route_intent(user_message: str) -> str:
     ]
 
     async with httpx.AsyncClient(timeout=60.0) as client:
+        # Debug print URL and key length to stderr
+        key_preview = f"{settings.LLM_API_KEY[:4]}..." if settings.LLM_API_KEY else "NONE"
+        print(f"[debug] LLM URL: {settings.LLM_API_BASE_URL}, KEY: {key_preview}", file=sys.stderr)
+        
         for _ in range(5):  # Max 5 tool iterations
             payload = {
                 "model": settings.LLM_API_MODEL,

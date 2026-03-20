@@ -5,12 +5,12 @@ import os
 class Settings(BaseSettings):
     BOT_TOKEN: Optional[str] = None
     LMS_API_URL: str = "http://localhost:42002"
-    LMS_API_KEY: str = "placeholder_key"
+    LMS_API_KEY: str = "alex"
     
     # LLM Settings
-    LLM_API_KEY: Optional[str] = None
+    LLM_API_KEY: Optional[str] = "alex_qwen"
     LLM_API_BASE_URL: str = "http://localhost:42005"
-    LLM_API_MODEL: str = "qwen-code"
+    LLM_API_MODEL: str = "coder-model"
 
     model_config = SettingsConfigDict(
         env_file=(
