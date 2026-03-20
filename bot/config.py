@@ -5,8 +5,12 @@ import os
 class Settings(BaseSettings):
     BOT_TOKEN: Optional[str] = None
     LMS_API_URL: str = "http://localhost:42002"
-    LMS_API_KEY: str = "alex"
+    LMS_API_KEY: str = "placeholder_key"
+    
+    # LLM Settings
     LLM_API_KEY: Optional[str] = None
+    LLM_API_BASE_URL: str = "http://localhost:42005"
+    LLM_API_MODEL: str = "qwen-code"
 
     model_config = SettingsConfigDict(
         env_file=(
@@ -17,7 +21,6 @@ class Settings(BaseSettings):
         ),
         env_file_encoding="utf-8",
         extra="ignore",
-        # Allow missing files
         env_nested_delimiter="__"
     )
 
