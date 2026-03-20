@@ -2,9 +2,11 @@ from typing import Dict, Any, Callable, Coroutine
 from .messages.core import handle_start, handle_help
 from .messages.lms import handle_health, handle_scores, handle_labs
 from .messages.info import handle_version
+from services.llm import route_intent
 
-def handle_unknown(text: str) -> str:
-    return f"I don't understand: {text}. Use /help to see available commands."
+def handle_unknown_text(text: str) -> str:
+    """Fallback for non-slash commands that should be routed to LLM."""
+    return f"Let me think about: {text}..."
 
 # Dispatcher for CLI mode
 COMMANDS: Dict[str, Callable[..., Coroutine[Any, Any, str]]] = {
@@ -24,14 +26,16 @@ async def dispatch_command(text: str) -> str:
     command = parts[0].lower()
     args = " ".join(parts[1:])
     
-    handler = COMMANDS.get(command)
-    if handler:
-        try:
-            if args:
-                 return await handler(args)
-            return await handler()
-        except TypeError:
-            # If handler doesn't accept args, call without them
-            return await handler()
+    if command.startswith("/"):
+        handler = COMMANDS.get(command)
+        if handler:
+            try:
+                if args:
+                     return await handler(args)
+                return await handler()
+            except TypeError:
+                return await handler()
+        return f"Unknown command: {command}. Use /help to see available commands."
     
-    return handle_unknown(text)
+    # If not a command, route to LLM
+    return await route_intent(text)
