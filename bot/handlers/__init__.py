@@ -1,21 +1,22 @@
-from typing import Dict, Any, Callable
+from typing import Dict, Any, Callable, Coroutine
 from .messages.core import handle_start, handle_help
-from .messages.lms import handle_health, handle_scores
+from .messages.lms import handle_health, handle_scores, handle_labs
 from .messages.info import handle_version
 
 def handle_unknown(text: str) -> str:
-    return f"I don't understand: {text}"
+    return f"I don't understand: {text}. Use /help to see available commands."
 
 # Dispatcher for CLI mode
-COMMANDS: Dict[str, Callable[..., str]] = {
+COMMANDS: Dict[str, Callable[..., Coroutine[Any, Any, str]]] = {
     "/start": handle_start,
     "/help": handle_help,
     "/health": handle_health,
+    "/labs": handle_labs,
     "/scores": handle_scores,
     "/version": handle_version,
 }
 
-def dispatch_command(text: str) -> str:
+async def dispatch_command(text: str) -> str:
     parts = text.split()
     if not parts:
         return ""
@@ -25,11 +26,12 @@ def dispatch_command(text: str) -> str:
     
     handler = COMMANDS.get(command)
     if handler:
-        if args:
-            try:
-                return handler(args)
-            except TypeError:
-                 return handler()
-        return handler()
+        try:
+            if args:
+                 return await handler(args)
+            return await handler()
+        except TypeError:
+            # If handler doesn't accept args, call without them
+            return await handler()
     
     return handle_unknown(text)
