@@ -25,6 +25,9 @@ The goal is to build a testable, maintainable Telegram bot that helps students i
 ## Architecture
 The bot follows a layered architecture:
 - **Entry Point (`bot.py`)**: Handles CLI arguments and Telegram polling.
-- **Handlers Layer (`handlers/`)**: Pure functions that process commands and return text responses.
+- **Handlers Layer (`handlers/`)**: Modular functions separated by concern:
+  - `core.py`: Basic commands like `/start` and `/help`.
+  - `lms.py`: LMS-related functionality like `/scores` and `/health`.
+  - `info.py`: Metadata and versioning information.
 - **Services Layer (`services/`)**: API clients for external systems (LMS, LLM).
 - **Configuration (`config.py`)**: Centralized settings management.
